@@ -1,0 +1,34 @@
+<div class="max-w-3xl mx-auto py-8">
+  <turbo-frame id="vacation_form" target="_top">
+    <h1 class="text-2xl font-bold mb-6">New Vacation Request for <%= @employee.name %></h1>
+
+    <%= form_with(model: [@employee, @request], local: true, class: "space-y-6") do |form| %>
+      <% if @request.errors.any? %>
+        <div class="bg-red-100 text-red-700 p-4 rounded-md mb-6">
+          <h2 class="font-bold mb-2">Please fix the following errors:</h2>
+          <ul>
+            <% @request.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    
+      <div>
+        <%= form.label :start_date, "Start Date", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.date_field :start_date, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+
+      <div>
+        <%= form.label :end_date, "End Date", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.date_field :end_date, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <%= form.submit "Create Vacation Request", class: "px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 transition duration-300 mr-2" %>
+
+        <%= link_to "Back to Employees List", employees_path, class: "inline-block px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700 transition duration-300" %>
+      </div>    
+    <% end %>
+  </div>
+</div>

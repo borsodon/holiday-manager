@@ -1,0 +1,88 @@
+<div class="max-w-7xl mx-auto py-8">
+  <h1 class="text-3xl font-bold text-center mb-8">Vacation Requests</h1>
+
+  <div class="mt-6 mb-2 flex justify-between items-center">
+    <%= link_to employees_path, class: "inline-block px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700 transition duration-300 flex items-center" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1m-4 6h5v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2h5m-2-10a4 4 0 110-8 4 4 0 010 8zm9 0a4 4 0 110-8 4 4 0 010 8z" />
+      </svg>
+      Back to Employees
+    <% end %>
+    <% if @employee.present? %>
+      <%= link_to new_employee_vacation_request_path(@employee.id), class: "inline-block px-4 py-2 bg-green-600 text-white rounded-md shadow-sm hover:bg-green-700 transition duration-300 flex items-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+        New Request
+      <% end %>
+    <% end %>
+  </div>
+
+  <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+    <thead class="bg-gray-800 text-white">
+      <tr>
+        <th class="w-1/4 px-6 py-4 text-left text-sm font-semibold">Employee</th>
+        <th class="w-1/4 px-6 py-4 text-left text-sm font-semibold">Start Date</th>
+        <th class="w-1/4 px-6 py-4 text-left text-sm font-semibold">End Date</th>
+        <th class="w-1/4 px-6 py-4 text-left text-sm font-semibold">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @requests.any? %>
+        <% @requests.each do |request| %>
+          <tr class="border-t border-gray-200 hover:bg-gray-50">
+            <td class="px-6 py-4"><%= request.employee.name %></td>
+            <td class="px-6 py-4"><%= request.start_date.strftime('%B %d, %Y') %></td>
+            <td class="px-6 py-4"><%= request.end_date.strftime('%B %d, %Y') %></td>
+            <td class="px-4 py-2">
+              <% if request.pending? %>
+                <%= button_to accept_employee_vacation_request_path(@employee || request.employee, request), method: :patch, class: "inline-block px-[6px] py-[4px] m-1 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300" do  %>
+                  <div class='flex'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Accept Request
+                  </div>
+                <% end %>
+                <%= button_to decline_employee_vacation_request_path(@employee || request.employee, request), method: :patch, class: "inline-block px-[6px] py-[4px] m-1 text-xs bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300" do %>
+                  <div class='flex'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Decline Request
+                  </div>
+                <% end %>
+              <% else %>
+                <% if request.accepted? %>
+                  <div class='flex'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-2 mt-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Accepted
+                  </div>
+                <% else %>
+                  <div class='flex'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-2 mt-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Declined
+                  </div>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="4" class="text-center px-6 py-4 text-gray-500">
+            No vacation requests available.
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="mt-6">
+    <%= paginate @requests %>
+  </div>
+</div>

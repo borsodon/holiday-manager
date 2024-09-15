@@ -1,0 +1,22 @@
+# Database configuration for PostgreSQL
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  database: holiday_manager  # Replace with your development database name
+
+test:
+  <<: *default
+  database: holiday_manager  # Replace with your test database name
+
+production:
+  <<: *default
+  database: holiday_manager  # Replace with your production database name
+  username: <%= ENV['PG_USER'] %>  # Use environment variables in production
+  password: <%= ENV['PG_PASSWORD'] %>
+  host: <%= ENV['PG_HOST'] %>

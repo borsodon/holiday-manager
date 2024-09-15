@@ -1,0 +1,37 @@
+AllCops:
+  TargetRubyVersion: 2.7
+  SuggestExtensions: false
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 7
+  Exclude:
+    - 'bin/*'
+    - 'bin/bundle'
+
+Metrics/MethodLength:
+  Max: 15
+  Exclude:
+    - 'bin/*'
+    - 'bin/bundle'
+
+Layout/LineLength:
+  Exclude:
+    - 'bin/*'
+    - 'bin/bundle'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'bin/*'
+    - 'bin/bundle'
+
+Metrics/BlockLength:
+  Max: 45
+  Exclude:
+    - 'db/schema.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'app/controllers/vacation_requests_controller.rb'
