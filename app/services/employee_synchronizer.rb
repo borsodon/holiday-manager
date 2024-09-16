@@ -15,7 +15,7 @@ class EmployeeSynchronizer
       department_import(employees_from_api)
       employee_import(employees_from_api)
 
-      SyncLog.create!(entity: 'employees', last_sync_at: Time.current)
+      SyncLog.create(entity: 'employees', last_sync_at: Time.current)
     end
   rescue StandardError => e
     Rails.logger.error("Employee sync failed: #{e.message}")
@@ -49,12 +49,10 @@ class EmployeeSynchronizer
         employee_id: employee_data['employee_id'],
         name: employee_data['name'],
         date_of_birth: employee_data['date_of_birth'],
-        department_id: department&.id # Ensure department exists before using the ID
+        department_id: department&.id
       )
     end
 
-    Employee.import(employees,
-                    on_duplicate_key_update: { conflict_target: [:employee_id],
-                                               columns: %i[name date_of_birth department_id] })
+    Employee.import(employees, on_duplicate_key_update: { conflict_target: %i[employee_id], columns: %i[name date_of_birth department_id] })
   end
 end

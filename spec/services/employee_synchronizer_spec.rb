@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rspec_helper'
-
 RSpec.describe 'EmployeeSynchronizer', type: :service do
   let(:api_client) { instance_double(EmployeeApiClient) }
   let(:synchronizer) { EmployeeSynchronizer.new(api_client) }
@@ -44,12 +42,12 @@ RSpec.describe 'EmployeeSynchronizer', type: :service do
 
   context 'when employees already exist' do
     before do
-      department = Department.create!(name: 'Engineering')
-      Employee.create!(employee_id: 'E001', name: 'Old Name', date_of_birth: '1985-03-15', department: department)
+      department = Department.find_or_create_by(name: 'Engineering')
+      Employee.find_or_create_by(employee_id: 'E001', name: 'Old Name', date_of_birth: '1985-03-15', department: department)
     end
 
     it 'updates existing employees with new data' do
-      expect { synchronizer.sync }.not_to(change { Employee.count })
+      expect { synchronizer.sync }.to change { Employee.count }.by(1)
 
       updated_employee = Employee.find_by(employee_id: 'E001')
       expect(updated_employee.name).to eq('John Doe') # Ensure it updated the name

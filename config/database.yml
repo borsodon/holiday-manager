@@ -8,11 +8,11 @@ default: &default
 
 development:
   <<: *default
-  database: holiday_manager  # Replace with your development database name
+  database: holiday_manager_development  # Replace with your development database name
 
 test:
   <<: *default
-  database: holiday_manager  # Replace with your test database name
+  database: holiday_manager_test  # Replace with your test database name
 
 production:
   <<: *default
